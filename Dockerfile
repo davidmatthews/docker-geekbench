@@ -18,7 +18,7 @@ RUN wget https://cdn.geekbench.com/Geekbench-6.3.0-Linux.tar.gz -O geekbench.tar
     && rm geekbench.tar.gz
 
 # Set the Geekbench binary directory in PATH
-ENV PATH="/opt/Geekbench-6.1.0-Linux:$PATH"
+ENV PATH="/opt/Geekbench-6.3.0-Linux:$PATH"
 
 # Define the entrypoint to run the Geekbench benchmark
-ENTRYPOINT ["/opt/Geekbench-6.1.0-Linux/geekbench6"]
+ENTRYPOINT ["/opt/Geekbench-6.3.0-Linux/geekbench6"]
