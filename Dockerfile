@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
 
 # Download and install Geekbench
 WORKDIR /opt
-RUN wget https://cdn.geekbench.com/Geekbench-6.1.0-Linux.tar.gz -O geekbench.tar.gz --no-check-certificate \
+RUN wget https://cdn.geekbench.com/Geekbench-6.3.0-Linux.tar.gz -O geekbench.tar.gz --no-check-certificate \
     && tar -xzf geekbench.tar.gz \
     && rm geekbench.tar.gz
 
