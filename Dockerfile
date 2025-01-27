@@ -1,6 +1,8 @@
 # Use Ubuntu as the base image
 FROM ubuntu:latest
 
+ARG TARGETPLATFORM
+
 # Set environment variables to non-interactive
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -13,7 +15,14 @@ RUN apt-get update && apt-get install -y \
 
 # Download and install Geekbench
 WORKDIR /opt
-RUN wget https://cdn.geekbench.com/Geekbench-6.3.0-Linux.tar.gz -O geekbench.tar.gz --no-check-certificate \
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; then \
+        download_url="https://cdn.geekbench.com/Geekbench-6.3.0-Linux.tar.gz" ; \
+    elif [ "$TARGETPLATFORM" = "linux/arm64" ] ; then \
+        download_url="https://cdn.geekbench.com/Geekbench-6.3.0-LinuxARMPreview.tar.gz" ; \
+    else \
+        echo "Unsupported platform" ; \
+    fi \
+    && wget "$download_url" -O geekbench.tar.gz --no-check-certificate \
     && tar -xzf geekbench.tar.gz \
     && rm geekbench.tar.gz
 
