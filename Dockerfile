@@ -17,17 +17,22 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /opt
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ] ; then \
         download_url="https://cdn.geekbench.com/Geekbench-6.3.0-Linux.tar.gz" ; \
+        echo '#!/bin/bash\n/opt/Geekbench-6.3.0-Linux/geekbench6' > /entrypoint.sh; \
+        export PATH="/opt/Geekbench-6.3.0-Linux:$PATH"; \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ] ; then \
         download_url="https://cdn.geekbench.com/Geekbench-6.3.0-LinuxARMPreview.tar.gz" ; \
+        echo '#!/bin/bash\n/opt/Geekbench-6.3.0-LinuxARMPreview/geekbench6' > /entrypoint.sh; \
+        export PATH="/opt/Geekbench-6.3.0-LinuxLinuxARMPreview:$PATH"; \
     else \
         echo "Unsupported platform" ; \
     fi \
     && wget "$download_url" -O geekbench.tar.gz --no-check-certificate \
     && tar -xzf geekbench.tar.gz \
-    && rm geekbench.tar.gz
+    && rm geekbench.tar.gz \
+    && chmod +x /entrypoint.sh
 
 # Set the Geekbench binary directory in PATH
-ENV PATH="/opt/Geekbench-6.3.0-Linux:$PATH"
+ENV PATH="$PATH"
 
 # Define the entrypoint to run the Geekbench benchmark
-ENTRYPOINT ["/opt/Geekbench-6.3.0-Linux/geekbench6"]
+ENTRYPOINT ["/entrypoint.sh"]
